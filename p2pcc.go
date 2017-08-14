@@ -26,7 +26,8 @@ func main() {
 
 //func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-    return shim.Success(nil)
+    //return shim.Success(nil)
+    return nil, nil
 }
 
 //func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
@@ -44,7 +45,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function str
     //}
 
     fmt.Println("invoke did not find func: " + function)
-    return shim.Error("Invalid Smart Contract function name.")
+    //return shim.Error("Invalid Smart Contract function name.")
+    return nil, errors.New("Received unknown function invocation: " + function)
 }
 
 //func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
@@ -64,24 +66,28 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, function
         i = i + 1
     }
 
-    return shim.Success(nil)
+    //return shim.Success(nil)
+    return nil, nil
 }
 
 //func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     if len(args) != 1 {
-        return shim.Error("Incorrect number of arguments. Expecting 1")
+        //return shim.Error("Incorrect number of arguments. Expecting 1")
+        return nil, errors.New("Incorrect number of arguments. Expecting 1")
     }
 
     accountAsBytes, _ := APIstub.GetState(args[0])
-    return shim.Success(accountAsBytes)
+    //return shim.Success(accountAsBytes)
+    return accountAsBytes, nil
 }
 
 //func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     //step 1 : define [borrowerId, fundsNeeded, borrowerRisk]
     if len(args) < 2 {
-        return shim.Error("Incorrect number of arguments. Expecting 2")
+        //return shim.Error("Incorrect number of arguments. Expecting 2")
+        return nil, errors.New("Incorrect number of arguments. Expecting 2")
     }
     borrowerId := args[0]
 
@@ -102,7 +108,9 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, function str
     queryString := fmt.Sprintf("{\"selector\":{\"Type\":\"%s\"}}", "LENDER")
     queryResults, err := getQueryResultForQueryString(APIstub, queryString)
     if err != nil {
-        return shim.Error(err.Error())
+        //return shim.Error(err.Error())
+        return nil, errors.New(err.Error())
+        
     }
     
     type LenderStruc struct {
@@ -169,7 +177,8 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, function str
     borrowerAsBytes, _ = json.Marshal(borrower)
     APIstub.PutState(borrowerId, borrowerAsBytes)
 
-    return shim.Success(borrowerAsBytes)
+    //return shim.Success(borrowerAsBytes)
+    return borrowerAsBytes, nil
 }
 
 //func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
@@ -234,7 +243,7 @@ func (s *SmartContract) Query(stub shim.ChaincodeStubInterface, function string,
 
     // Handle different functions
     if function == "read" { //read a variable
-        return t.read(stub, args)
+        return s.read(stub, args)
     }
     fmt.Println("query did not find func: " + function)
 
