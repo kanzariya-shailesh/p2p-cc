@@ -87,6 +87,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
         return nil, errors.New(err.Error())
         
     }
+    fmt.Println(queryResults)
     
     type LenderStruc struct {
         Key string `json:"Key"`
