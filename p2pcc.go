@@ -95,7 +95,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     //lendersS := LendersStruc{}
     //json.Unmarshal(queryResults, &lendersS)
     lender1AsBytes, _ := APIstub.GetState("ACCOUNT0")
-    lender2AsBytes, _ := APIstub.GetState("ACCOUNT0")
+    lender2AsBytes, _ := APIstub.GetState("ACCOUNT1")
     lender1 := Account{}
     lender2 := Account{}
     json.Unmarshal(lender1AsBytes, &lender1)
