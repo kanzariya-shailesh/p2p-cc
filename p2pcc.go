@@ -172,7 +172,7 @@ func (s *SmartContract) read(stub shim.ChaincodeStubInterface, args []string) ([
     return valAsbytes, nil
 }
 func (s *SmartContract) readAll(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    var key, jsonResp string
+    var jsonResp string
     var err error
 
     //key = args[0]
