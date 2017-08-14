@@ -156,6 +156,10 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 //}
             }
         }
+
+        if remaining == 0 {
+            break
+        }
         i = i + 1
     }
 
