@@ -108,13 +108,13 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
         fmt.Println("for lender ", key)
         fmt.Println("risk", val.Risk)
         fmt.Println("level3")
-        logger.Errorf("level3")
+        logger.Warning("level3")
         if val.Risk <= borrowerRisk {
             fmt.Println("level4")
-            logger.Errorf("level4")
+            logger.Warning("level4")
             if val.Fund > 0 {
                 fmt.Println("possible funding", key)
-                logger.Errorf("level5 : possible funding")
+                logger.Warning("level5 : possible funding")
                 toTransfer := fundsNeeded
                 if toTransfer > val.Fund {
                     toTransfer = val.Fund
@@ -136,7 +136,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 e := APIstub.PutState(args[0], lenderAsBytes)
                 if e != nil {
                     fmt.Println("Adesh Printed: " + e.Error())
-                    logger.Errorf("level6 err") 
+                    logger.Warning("level6 err") 
                 }
                 //substep2: give to borrower & dont update borrower yet
                 borrower.Fund = borrower.Fund + toTransfer
