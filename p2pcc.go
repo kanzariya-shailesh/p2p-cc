@@ -50,7 +50,7 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function str
 }
 
 //func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     Accounts := []Account{
         Account{Name:"Harrison", Risk:2, Type:"LENDER", Fund:20000, Loan:0},
         Account{Name:"Gibson", Risk:3, Type:"LENDER", Fund:20000, Loan:0},
@@ -71,7 +71,7 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, function
 }
 
 //func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     if len(args) != 1 {
         //return shim.Error("Incorrect number of arguments. Expecting 1")
         return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -83,7 +83,7 @@ func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, functio
 }
 
 //func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     //step 1 : define [borrowerId, fundsNeeded, borrowerRisk]
     if len(args) < 2 {
         //return shim.Error("Incorrect number of arguments. Expecting 2")
