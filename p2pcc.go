@@ -111,8 +111,11 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
 
     i := 0
     for i < len(lendersS) {
-        key := lendersS[i].Key
-        val := lendersS[i].Record
+        key := "ACCOUNT0"
+        if {
+            key = "ACCOUNT1"
+        }
+        val := lendersS[i]
 
         fmt.Println("for lender ", key)
         fmt.Println("risk", val.Risk)
@@ -131,19 +134,19 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 }    
                 remaining = remaining - toTransfer
                 //substep1: take from lender & update lender
-                lenderAsBytes, _ := APIstub.GetState(key)
-                lender := Account{}
-                json.Unmarshal(lenderAsBytes, &lender)
-                lender.Fund = lender.Fund - toTransfer
-                lender.Loan = lender.Loan + toTransfer
+                //lenderAsBytes, _ := APIstub.GetState(key)
+                //lender := Account{}
+                //json.Unmarshal(lenderAsBytes, &lender)
+                val.Fund = val.Fund - toTransfer
+                val.Loan = val.Loan + toTransfer
                 if val.Fund == 0 {
                     if val.Risk != 1 {
-                        lender.Risk = lender.Risk - 1
+                        val.Risk = val.Risk - 1
                     }
                 }
-                lenderAsBytes, _ = json.Marshal(lender)
+                lenderAsBytes, _ = json.Marshal(val)
                 fmt.Println("Printed11: updating account")
-                e := APIstub.PutState(args[0], lenderAsBytes)
+                e := APIstub.PutState(key, lenderAsBytes)
                 if e != nil {
                     fmt.Println("Adesh Printed: " + e.Error())
                     logger.Warning("level6 err") 
