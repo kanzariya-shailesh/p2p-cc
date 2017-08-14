@@ -144,7 +144,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                         val.Risk = val.Risk - 1
                     }
                 }
-                lenderAsBytes, _ = json.Marshal(val)
+                lenderAsBytes, _ := json.Marshal(val)
                 fmt.Println("Printed11: updating account")
                 e := APIstub.PutState(key, lenderAsBytes)
                 if e != nil {
