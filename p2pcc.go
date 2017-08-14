@@ -224,7 +224,7 @@ func (s *SmartContract) readAll(stub shim.ChaincodeStubInterface, args []string)
     }
 
     //var b []byte
-    valAsbytes := []byte(string(valAsbytes1)+ string(valAsbytes2) + string(valAsbytes3))
+    valAsbytes := []byte("["+string(valAsbytes1)+","+ string(valAsbytes2)+"," + string(valAsbytes3)+"]")
     
     return valAsbytes, nil
 }
