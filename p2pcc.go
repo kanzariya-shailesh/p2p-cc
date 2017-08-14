@@ -103,7 +103,9 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
 
         fmt.Println("for lender ", key)
         fmt.Println("risk", val.Risk)
-        if val.Risk<= borrowerRisk {
+        fmt.Println("level3")
+        if val.Risk <= borrowerRisk {
+            fmt.Println("level4")
             if val.Fund > 0 {
                 fmt.Println("possible funding", key)
                 toTransfer := fundsNeeded
