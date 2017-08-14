@@ -122,8 +122,11 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                         }
                     }
                     lenderAsBytes, _ = json.Marshal(lender)
-                    APIstub.PutState(args[0], lenderAsBytes)
-
+                    fmt.Println("Printed11: updating account")
+                    e := APIstub.PutState(args[0], lenderAsBytes)
+                    if e {
+                        fmt.Println("Adesh Printed: " + e.Error())
+                    }
                     //substep2: give to borrower & dont update borrower yet
                     borrower.Fund = borrower.Fund + toTransfer
                 }
