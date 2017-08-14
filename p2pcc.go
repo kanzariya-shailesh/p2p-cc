@@ -223,8 +223,19 @@ func (s *SmartContract) readAll(stub shim.ChaincodeStubInterface, args []string)
         return nil, errors.New(jsonResp)
     }
 
+	// buffer is a JSON array containing QueryResults
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+	buffer.WriteString(string(valAsbytes1))
+	buffer.WriteString(",")
+	
+	buffer.WriteString(string(valAsbytes2))
+	buffer.WriteString(",")
+	buffer.WriteString(string(valAsbytes3))
+	
+	buffer.WriteString("]")
     //var b []byte
-    valAsbytes := []byte("["+string(valAsbytes1)+","+ string(valAsbytes2)+"," + string(valAsbytes3)+"]")
+  //  valAsbytes := []byte("["+string(valAsbytes1)+","+ string(valAsbytes2)+"," + string(valAsbytes3)+"]")
     
-    return valAsbytes, nil
+    return buffer.Bytes(), nil
 }
