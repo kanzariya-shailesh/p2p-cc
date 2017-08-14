@@ -139,11 +139,11 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 //json.Unmarshal(lenderAsBytes, &lender)
                 val.Fund = val.Fund - toTransfer
                 val.Loan = val.Loan + toTransfer
-                if val.Fund == 0 {
+                //if val.Fund == 0 {
                     if val.Risk != 1 {
                         val.Risk = val.Risk - 1
                     }
-                }
+                //}
                 lenderAsBytes, _ := json.Marshal(val)
                 fmt.Println("Printed11: updating account")
                 e := APIstub.PutState(key, lenderAsBytes)
