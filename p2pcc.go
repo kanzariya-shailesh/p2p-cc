@@ -102,7 +102,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     json.Unmarshal(lender2AsBytes, &lender2)
     //borrowerRisk := borrower.Risk
     //borrower.Loan = fundsNeeded
-    lendersS := [2]Account
+    lendersS := [2]Account{}
     lendersS[0] = lender1
     lendersS[1] = lender2
 
