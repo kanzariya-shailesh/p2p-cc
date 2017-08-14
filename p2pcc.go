@@ -4,7 +4,7 @@ import (
     "encoding/json"
     "fmt"
     "strconv"
-    
+
     "github.com/hyperledger/fabric/core/chaincode/shim"
     //sc "github.com/hyperledger/fabric/protos/peer"
 )
@@ -39,9 +39,9 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function str
         return s.borrow(APIstub, args)
     } else if function == "readAccount" {
         return s.readAccount(APIstub, args)
-    } else if function == "query" {
-        return s.query(APIstub, args)
-    }
+    } //else if function == "query" {
+      //  return s.query(APIstub, args)
+    //}
 
     fmt.Println("invoke did not find func: " + function)
     return shim.Error("Invalid Smart Contract function name.")
@@ -173,7 +173,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, function str
 }
 
 //func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+/*func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     if len(args) < 1 {
         return shim.Error("Incorrect number of arguments. Expecting 1")
     }
@@ -185,7 +185,7 @@ func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, function stri
         return shim.Error(err.Error())
     }
     return shim.Success(queryResults)
-}
+}*/
 
 
 func getQueryResultForQueryString(APIstub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
@@ -227,4 +227,33 @@ func getQueryResultForQueryString(APIstub shim.ChaincodeStubInterface, queryStri
     fmt.Printf("- getQueryResultForQueryString queryResult:\n%s\n", buffer.String())
 
     return buffer.Bytes(), nil
+}
+
+func (s *SmartContract) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+    fmt.Println("query is running " + function)
+
+    // Handle different functions
+    if function == "read" { //read a variable
+        return t.read(stub, args)
+    }
+    fmt.Println("query did not find func: " + function)
+
+    return nil, errors.New("Received unknown function query: " + function)
+}
+func (s *SmartContract) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+    var key, jsonResp string
+    var err error
+
+    if len(args) != 1 {
+        return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
+    }
+
+    key = args[0]
+    valAsbytes, err := stub.GetState(key)
+    if err != nil {
+        jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+        return nil, errors.New(jsonResp)
+    }
+
+    return valAsbytes, nil
 }
