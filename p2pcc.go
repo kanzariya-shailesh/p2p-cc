@@ -36,8 +36,12 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function str
     fmt.Println("invoke did not find func: " + function)
     return nil, errors.New("Received unknown function invocation: " + function)
 }
-
 func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+
+    e1 := APIstub.DelState("ACCOUNT0")
+    e1 := APIstub.DelState("ACCOUNT1")
+    e1 := APIstub.DelState("ACCOUNT2")
+
     Accounts := []Account{
         Account{Name:"Harrison", Risk:2, Type:"LENDER", Fund:20000, Loan:0},
         Account{Name:"Gibson", Risk:3, Type:"LENDER", Fund:20000, Loan:0},
@@ -55,8 +59,6 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []s
 
     return nil, nil
 }
-
-
 func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     //step 1 : define [borrowerId, fundsNeeded, borrowerRisk]
     if len(args) < 2 {
