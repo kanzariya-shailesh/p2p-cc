@@ -193,6 +193,8 @@ func (s *SmartContract) readAll(stub shim.ChaincodeStubInterface, args []string)
         return nil, errors.New(jsonResp)
     }
 
-    valAsbytes := append(valAsbytes1,valAsbytes2,valAsbytes3)
+    //var b []byte
+    valAsbytes := []byte(string(valAsbytes1)+ string(valAsbytes2) + string(valAsbytes3))
+    
     return valAsbytes, nil
 }
