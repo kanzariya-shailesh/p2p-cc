@@ -6,7 +6,7 @@ import (
     "strconv"
 
     "github.com/hyperledger/fabric/core/chaincode/shim"
-    sc "github.com/hyperledger/fabric/protos/peer"
+    //sc "github.com/hyperledger/fabric/protos/peer"
 )
 type SmartContract struct {
 }
@@ -23,10 +23,13 @@ func main() {
         fmt.Printf("Error creating new Smart Contract: %s", err)
     }
 }
-func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
+//func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
+func (s *SimpleChaincode) Init(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     return shim.Success(nil)
 }
-func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
+
+//func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
+func (s *SimpleChaincode) Invoke(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     function, args := APIstub.GetFunctionAndParameters()
 
     if function == "initLedger" {
@@ -42,7 +45,9 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
     fmt.Println("invoke did not find func: " + function)
     return shim.Error("Invalid Smart Contract function name.")
 }
-func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+//func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+func (s *SimpleChaincode) initLedger(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     Accounts := []Account{
         Account{Name:"Harrison", Risk:2, Type:"LENDER", Fund:20000, Loan:0},
         Account{Name:"Gibson", Risk:3, Type:"LENDER", Fund:20000, Loan:0},
@@ -60,7 +65,9 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []s
 
     return shim.Success(nil)
 }
-func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+//func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+func (s *SimpleChaincode) readAccount(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     if len(args) != 1 {
         return shim.Error("Incorrect number of arguments. Expecting 1")
     }
@@ -68,7 +75,9 @@ func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, args []
     accountAsBytes, _ := APIstub.GetState(args[0])
     return shim.Success(accountAsBytes)
 }
-func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+//func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+func (s *SimpleChaincode) borrow(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     //step 1 : define [borrowerId, fundsNeeded, borrowerRisk]
     if len(args) < 2 {
         return shim.Error("Incorrect number of arguments. Expecting 2")
@@ -161,7 +170,9 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
 
     return shim.Success(borrowerAsBytes)
 }
-func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+//func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+func (s *SimpleChaincode) query(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     if len(args) < 1 {
         return shim.Error("Incorrect number of arguments. Expecting 1")
     }
@@ -173,10 +184,10 @@ func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, args []string
         return shim.Error(err.Error())
     }
     return shim.Success(queryResults)
-}   
+}
+
 
 func getQueryResultForQueryString(APIstub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
-
     fmt.Printf("- getQueryResultForQueryString queryString:\n%s\n", queryString)
 
     resultsIterator, err := APIstub.GetQueryResult(queryString)
