@@ -1,6 +1,6 @@
 package main
 import (
-    "bytes"
+    //"bytes"
     "encoding/json"
     "fmt"
     "strconv"
@@ -106,11 +106,13 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
 
     //step 2 : get [borrowerRisk,matchedLenders]
     queryString := fmt.Sprintf("{\"selector\":{\"Type\":\"%s\"}}", "LENDER")
+    
     //queryResults, err := getQueryResultForQueryString(APIstub, queryString)
     
-    var a [1]string
-    a[0] = queryString
-    queryResults, err := s.Query(APIstub,"read", a)
+    //var a [1]string
+    //a[0] = queryString
+    tempAry := [1]string{queryString}
+    queryResults, err := s.Query(APIstub,"read", tempAry)
     
     if err != nil {
         //return shim.Error(err.Error())
