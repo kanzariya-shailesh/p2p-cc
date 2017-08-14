@@ -202,7 +202,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
 }*/
 
 
-func getQueryResultForQueryString(APIstub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
+/*func getQueryResultForQueryString(APIstub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
     fmt.Printf("- getQueryResultForQueryString queryString:\n%s\n", queryString)
 
     resultsIterator, err := APIstub.GetQueryResult(queryString)
@@ -241,7 +241,7 @@ func getQueryResultForQueryString(APIstub shim.ChaincodeStubInterface, queryStri
     fmt.Printf("- getQueryResultForQueryString queryResult:\n%s\n", buffer.String())
 
     return buffer.Bytes(), nil
-}
+}*/
 
 func (s *SmartContract) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     fmt.Println("query is running " + function)
