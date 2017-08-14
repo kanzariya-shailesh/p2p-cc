@@ -107,7 +107,10 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     //step 2 : get [borrowerRisk,matchedLenders]
     queryString := fmt.Sprintf("{\"selector\":{\"Type\":\"%s\"}}", "LENDER")
     //queryResults, err := getQueryResultForQueryString(APIstub, queryString)
-    queryResults, err := s.Query(APIstub,"read", queryString)
+    
+    var a [1]string
+    a[0] = queryString
+    queryResults, err := s.Query(APIstub,"read", a)
     
     if err != nil {
         //return shim.Error(err.Error())
