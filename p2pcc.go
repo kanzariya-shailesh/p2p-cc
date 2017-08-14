@@ -4,7 +4,7 @@ import (
     "encoding/json"
     "fmt"
     "strconv"
-
+    "errors"
     "github.com/hyperledger/fabric/core/chaincode/shim"
     //sc "github.com/hyperledger/fabric/protos/peer"
 )
