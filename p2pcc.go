@@ -32,7 +32,7 @@ func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface, function strin
 
 //func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
 func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-    function, args := APIstub.GetFunctionAndParameters()
+    //function, args := APIstub.GetFunctionAndParameters()
 
     if function == "initLedger" {
         return s.initLedger(APIstub, args)
