@@ -78,25 +78,35 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     borrower.Loan = fundsNeeded
     
     //step 2 : get [borrowerRisk,matchedLenders]
-    queryString := fmt.Sprintf("{\"selector\":{\"Type\":\"%s\"}}", "LENDER")
-    tempAry := []string{queryString}
-    queryResults, err := s.Query(APIstub,"read", tempAry)
+    //queryString := fmt.Sprintf("{\"selector\":{\"Type\":\"%s\"}}", "LENDER")
+    //tempAry := []string{queryString}
+    //queryResults, err := s.Query(APIstub,"read", tempAry)
     
-    if err != nil {
-        return nil, errors.New(err.Error()) 
-    }
+    //if err != nil {
+    //    return nil, errors.New(err.Error()) 
+    //}
     //fmt.Println(queryResults)
 
-    type LenderStruc struct {
-        Key string `json:"Key"`
-        Record Account `json:"Record"`
-    }
-    type LendersStruc []*LenderStruc
-    lendersS := LendersStruc{}
-    json.Unmarshal(queryResults, &lendersS)
+    //type LenderStruc struct {
+    //    Key string `json:"Key"`
+    //    Record Account `json:"Record"`
+    //}
+    //type LendersStruc []*LenderStruc
+    //lendersS := LendersStruc{}
+    //json.Unmarshal(queryResults, &lendersS)
+    lender1AsBytes, _1 := APIstub.GetState("ACCOUNT0")
+    lender2AsBytes, _2 := APIstub.GetState("ACCOUNT0")
+    lender1 := Account{}
+    lender2 := Account{}
+    json.Unmarshal(lender1AsBytes, &lender1)
+    json.Unmarshal(lender2AsBytes, &lender2)
+    //borrowerRisk := borrower.Risk
+    //borrower.Loan = fundsNeeded
+    lendersS := [2]Account
+    lendersS[0] = lender1
+    lendersS[1] = lender2
 
     logger.Debug(queryResults)
-
     logger.Debug("d level2 "+strconv.Itoa(len(lendersS)))
 
     i := 0
