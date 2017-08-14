@@ -108,7 +108,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 fmt.Println("possible funding", key)
                 toTransfer := fundsNeeded
                 if toTransfer > val.Fund {
-                    toTransfer := val.Fund
+                    toTransfer = val.Fund
                 }    
                 remaining = remaining - toTransfer
                 //substep1: take from lender & update lender
