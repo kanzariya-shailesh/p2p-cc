@@ -4,6 +4,7 @@ import (
     "fmt"
     "strconv"
     "errors"
+    "strconv"
     "github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -69,28 +70,23 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
         return nil, errors.New("Incorrect number of arguments. Expecting 2")
     }
     borrowerId := args[0]
-
     fundsNeeded, err := strconv.Atoi(args[1]);
-
     remaining := fundsNeeded
-
     borrowerAsBytes, _ := APIstub.GetState(borrowerId)
     borrower := Account{}
     json.Unmarshal(borrowerAsBytes, &borrower)
     borrowerRisk := borrower.Risk
     borrower.Loan = fundsNeeded
     
-
     //step 2 : get [borrowerRisk,matchedLenders]
     queryString := fmt.Sprintf("{\"selector\":{\"Type\":\"%s\"}}", "LENDER")
     tempAry := []string{queryString}
     queryResults, err := s.Query(APIstub,"read", tempAry)
     
     if err != nil {
-        return nil, errors.New(err.Error())
-        
+        return nil, errors.New(err.Error()) 
     }
-    fmt.Println(queryResults)
+    //fmt.Println(queryResults)
 
     type LenderStruc struct {
         Key string `json:"Key"`
@@ -99,6 +95,11 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     type LendersStruc []*LenderStruc
     lendersS := LendersStruc{}
     json.Unmarshal(queryResults, &lendersS)
+
+    logger.Debug("d level2 "+strconv.Itoa(len(lendersS)))
+    logger.Warning("w level2 "+strconv.Itoa(len(lendersS)))
+    logger.Warningf("wf level2 "+strconv.Itoa(len(lendersS)))
+    logger.Debugf("df level2 "+ strconv.Itoa(len(lendersS)))
 
     i := 0
     for i < len(lendersS) {
@@ -109,6 +110,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
         fmt.Println("risk", val.Risk)
         fmt.Println("level3")
         logger.Warning("level3")
+        
         if val.Risk <= borrowerRisk {
             fmt.Println("level4")
             logger.Warning("level4")
