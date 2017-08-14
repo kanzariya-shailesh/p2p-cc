@@ -106,7 +106,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     lendersS[0] = lender1
     lendersS[1] = lender2
 
-    logger.Debug(queryResults)
+    //logger.Debug(queryResults)
     logger.Debug("d level2 "+strconv.Itoa(len(lendersS)))
 
     i := 0
