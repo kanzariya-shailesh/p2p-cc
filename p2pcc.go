@@ -112,7 +112,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     i := 0
     for i < len(lendersS) {
         key := "ACCOUNT0"
-        if {
+        if i == 1 {
             key = "ACCOUNT1"
         }
         val := lendersS[i]
