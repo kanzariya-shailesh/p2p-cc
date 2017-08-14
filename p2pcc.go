@@ -39,8 +39,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function str
 func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
     e1 := APIstub.DelState("ACCOUNT0")
-    e1 := APIstub.DelState("ACCOUNT1")
-    e1 := APIstub.DelState("ACCOUNT2")
+    e2 := APIstub.DelState("ACCOUNT1")
+    e3 := APIstub.DelState("ACCOUNT2")
 
     Accounts := []Account{
         Account{Name:"Harrison", Risk:2, Type:"LENDER", Fund:20000, Loan:0},
