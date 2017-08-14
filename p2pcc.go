@@ -111,7 +111,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     
     //var a [1]string
     //a[0] = queryString
-    tempAry := [1]string{queryString}
+    tempAry := []string{queryString}
     queryResults, err := s.Query(APIstub,"read", tempAry)
     
     if err != nil {
