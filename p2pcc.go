@@ -1,12 +1,10 @@
 package main
 import (
-    //"bytes"
     "encoding/json"
     "fmt"
     "strconv"
     "errors"
     "github.com/hyperledger/fabric/core/chaincode/shim"
-    //sc "github.com/hyperledger/fabric/protos/peer"
 )
 type SmartContract struct {
 }
@@ -24,32 +22,21 @@ func main() {
     }
 }
 
-//func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-    //return shim.Success(nil)
     return nil, nil
 }
 
-//func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
 func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-    //function, args := APIstub.GetFunctionAndParameters()
-
     if function == "initLedger" {
         return s.initLedger(APIstub, args)
     } else if function == "borrow" {
         return s.borrow(APIstub, args)
-    } else if function == "readAccount" {
-        return s.readAccount(APIstub, args)
-    } //else if function == "query" {
-      //  return s.query(APIstub, args)
-    //}
+    }
 
     fmt.Println("invoke did not find func: " + function)
-    //return shim.Error("Invalid Smart Contract function name.")
     return nil, errors.New("Received unknown function invocation: " + function)
 }
 
-//func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     Accounts := []Account{
         Account{Name:"Harrison", Risk:2, Type:"LENDER", Fund:20000, Loan:0},
@@ -66,23 +53,10 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []s
         i = i + 1
     }
 
-    //return shim.Success(nil)
     return nil, nil
 }
 
-//func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-func (s *SmartContract) readAccount(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    if len(args) != 1 {
-        //return shim.Error("Incorrect number of arguments. Expecting 1")
-        return nil, errors.New("Incorrect number of arguments. Expecting 1")
-    }
 
-    accountAsBytes, _ := APIstub.GetState(args[0])
-    //return shim.Success(accountAsBytes)
-    return accountAsBytes, nil
-}
-
-//func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     //step 1 : define [borrowerId, fundsNeeded, borrowerRisk]
     if len(args) < 2 {
@@ -93,29 +67,21 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
 
     fundsNeeded, err := strconv.Atoi(args[1]);
 
-    //fundsNeeded := args[1]
     remaining := fundsNeeded
 
     borrowerAsBytes, _ := APIstub.GetState(borrowerId)
     borrower := Account{}
     json.Unmarshal(borrowerAsBytes, &borrower)
     borrowerRisk := borrower.Risk
-    //update loan ammount for borrower
     borrower.Loan = fundsNeeded
     
 
     //step 2 : get [borrowerRisk,matchedLenders]
     queryString := fmt.Sprintf("{\"selector\":{\"Type\":\"%s\"}}", "LENDER")
-    
-    //queryResults, err := getQueryResultForQueryString(APIstub, queryString)
-    
-    //var a [1]string
-    //a[0] = queryString
     tempAry := []string{queryString}
     queryResults, err := s.Query(APIstub,"read", tempAry)
     
     if err != nil {
-        //return shim.Error(err.Error())
         return nil, errors.New(err.Error())
         
     }
@@ -128,13 +94,6 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     lendersS := LendersStruc{}
     json.Unmarshal(queryResults, &lendersS)
 
-    //lenders := queryResults
-    //lendersStr := string(lenders)
-    //lendersObj, err := base64.StdEncoding.DecodeString(lenders)
-
-    //return shim.Success(lenders)
-
-    //step 3 : for each matchLender -> transfer fund, maintain remaningLoan, if lendedFundByLender = 50% his fund -> change risk
     i := 0
     for i < len(lendersS) {
         key := lendersS[i].Key
@@ -149,7 +108,6 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 if toTransfer > val.Fund {
                     toTransfer := val.Fund
                     remaining = remaining - toTransfer
-                    //transer
                     //substep1: take from lender & update lender
                     lenderAsBytes, _ := APIstub.GetState(key)
                     lender := Account{}
@@ -169,9 +127,6 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 }
             }
         }
-        //carAsBytes, _ := json.Marshal(cars[i])
-        //APIstub.PutState("CAR"+strconv.Itoa(i), carAsBytes)
-        //fmt.Println("Added", cars[i])
         i = i + 1
     }
 
@@ -184,73 +139,16 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     borrowerAsBytes, _ = json.Marshal(borrower)
     APIstub.PutState(borrowerId, borrowerAsBytes)
 
-    //return shim.Success(borrowerAsBytes)
     return borrowerAsBytes, nil
 }
-
-//func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-/*func (s *SmartContract) query(APIstub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-    if len(args) < 1 {
-        return shim.Error("Incorrect number of arguments. Expecting 1")
-    }
-
-    queryString := args[0]
-
-    queryResults, err := getQueryResultForQueryString(APIstub, queryString)
-    if err != nil {
-        return shim.Error(err.Error())
-    }
-    return shim.Success(queryResults)
-}*/
-
-
-/*func getQueryResultForQueryString(APIstub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
-    fmt.Printf("- getQueryResultForQueryString queryString:\n%s\n", queryString)
-
-    resultsIterator, err := APIstub.GetQueryResult(queryString)
-    if err != nil {
-        return nil, err
-    }
-    defer resultsIterator.Close()
-
-    // buffer is a JSON array containing QueryRecords
-    var buffer bytes.Buffer
-    buffer.WriteString("[")
-
-    bArrayMemberAlreadyWritten := false
-    for resultsIterator.HasNext() {
-        queryResponse, err := resultsIterator.Next()
-        if err != nil {
-            return nil, err
-        }
-        // Add a comma before array members, suppress it for the first array member
-        if bArrayMemberAlreadyWritten == true {
-            buffer.WriteString(",")
-        }
-        buffer.WriteString("{\"Key\":")
-        buffer.WriteString("\"")
-        buffer.WriteString(queryResponse.Key)
-        buffer.WriteString("\"")
-
-        buffer.WriteString(", \"Record\":")
-        // Record is a JSON object, so we write as-is
-        buffer.WriteString(string(queryResponse.Value))
-        buffer.WriteString("}")
-        bArrayMemberAlreadyWritten = true
-    }
-    buffer.WriteString("]")
-
-    fmt.Printf("- getQueryResultForQueryString queryResult:\n%s\n", buffer.String())
-
-    return buffer.Bytes(), nil
-}*/
 
 func (s *SmartContract) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     fmt.Println("query is running " + function)
 
-    // Handle different functions
-    if function == "read" { //read a variable
+    if function == "read" {
         return s.read(stub, args)
+    } else if function == "readAll" {
+        return s.readAll(stub, args)
     }
     fmt.Println("query did not find func: " + function)
 
@@ -271,5 +169,30 @@ func (s *SmartContract) read(stub shim.ChaincodeStubInterface, args []string) ([
         return nil, errors.New(jsonResp)
     }
 
+    return valAsbytes, nil
+}
+func (s *SmartContract) readAll(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+    var key, jsonResp string
+    var err error
+
+    //key = args[0]
+    valAsbytes1, err1 := stub.GetState("ACCOUNT0")
+    valAsbytes2, err2 := stub.GetState("ACCOUNT1")
+    valAsbytes3, err3 := stub.GetState("ACCOUNT2")
+
+    if err1 != nil {
+        jsonResp = "{\"Error\":\"Failed to get state for ACCOUNT0\"}"
+        return nil, errors.New(jsonResp)
+    }
+    if err2 != nil {
+        jsonResp = "{\"Error\":\"Failed to get state for ACCOUNT1\"}"
+        return nil, errors.New(jsonResp)
+    }
+    if err3 != nil {
+        jsonResp = "{\"Error\":\"Failed to get state for ACCOUNT3\"}"
+        return nil, errors.New(jsonResp)
+    }
+
+    valAsbytes := append(valAsbytes1,valAsbytes2,valAsbytes3)
     return valAsbytes, nil
 }
