@@ -104,32 +104,33 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
         fmt.Println("for lender ", key)
         fmt.Println("risk", val.Risk)
         if val.Risk<= borrowerRisk {
-            if val.Fund < 0 {
+            if val.Fund > 0 {
                 fmt.Println("possible funding", key)
                 toTransfer := fundsNeeded
                 if toTransfer > val.Fund {
                     toTransfer := val.Fund
-                    remaining = remaining - toTransfer
-                    //substep1: take from lender & update lender
-                    lenderAsBytes, _ := APIstub.GetState(key)
-                    lender := Account{}
-                    json.Unmarshal(lenderAsBytes, &lender)
-                    lender.Fund = lender.Fund - toTransfer
-                    lender.Loan = lender.Loan + toTransfer
-                    if val.Fund == 0 {
-                        if val.Risk != 1 {
-                            lender.Risk = lender.Risk - 1
-                        }
+                }    
+                remaining = remaining - toTransfer
+                //substep1: take from lender & update lender
+                lenderAsBytes, _ := APIstub.GetState(key)
+                lender := Account{}
+                json.Unmarshal(lenderAsBytes, &lender)
+                lender.Fund = lender.Fund - toTransfer
+                lender.Loan = lender.Loan + toTransfer
+                if val.Fund == 0 {
+                    if val.Risk != 1 {
+                        lender.Risk = lender.Risk - 1
                     }
-                    lenderAsBytes, _ = json.Marshal(lender)
-                    fmt.Println("Printed11: updating account")
-                    e := APIstub.PutState(args[0], lenderAsBytes)
-                    if e != nil {
-                        fmt.Println("Adesh Printed: " + e.Error())
-                    }
-                    //substep2: give to borrower & dont update borrower yet
-                    borrower.Fund = borrower.Fund + toTransfer
                 }
+                lenderAsBytes, _ = json.Marshal(lender)
+                fmt.Println("Printed11: updating account")
+                e := APIstub.PutState(args[0], lenderAsBytes)
+                if e != nil {
+                    fmt.Println("Adesh Printed: " + e.Error())
+                }
+                //substep2: give to borrower & dont update borrower yet
+                borrower.Fund = borrower.Fund + toTransfer
+                //}
             }
         }
         i = i + 1
