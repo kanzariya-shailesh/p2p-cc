@@ -95,10 +95,9 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     lendersS := LendersStruc{}
     json.Unmarshal(queryResults, &lendersS)
 
+    logger.Debug(queryResults)
+
     logger.Debug("d level2 "+strconv.Itoa(len(lendersS)))
-    logger.Warning("w level2 "+strconv.Itoa(len(lendersS)))
-    logger.Warningf("wf level2 "+strconv.Itoa(len(lendersS)))
-    logger.Debugf("df level2 "+ strconv.Itoa(len(lendersS)))
 
     i := 0
     for i < len(lendersS) {
@@ -108,7 +107,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
         fmt.Println("for lender ", key)
         fmt.Println("risk", val.Risk)
         fmt.Println("level3")
-        logger.Warning("level3")
+        logger.Debug("level3")
         
         if val.Risk <= borrowerRisk {
             fmt.Println("level4")
