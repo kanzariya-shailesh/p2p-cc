@@ -35,9 +35,7 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function str
         return s.initLedger(APIstub, args)
     } else if function == "borrow" {
         return s.borrow(APIstub, args)
-    }/* else if function == "transfer" {
-        return s.transfer(APIstub)
-    }*/ else if function == "updateRisk" {
+    } else if function == "updateRisk" {
         return s.updateRisk(APIstub, args)
     }
 
