@@ -150,7 +150,7 @@ func (s *SmartContract) transfer(APIstub shim.ChaincodeStubInterface) ([]byte, e
     accountAsBytes, _ := APIstub.GetState("ACCOUNT0")
     account := Account{}
     json.Unmarshal(accountAsBytes, &account)
-    account.Name = 'ADESH2'
+    account.Name = "ADESH2"
     accountAsBytes, _ = json.Marshal(account)
     APIstub.PutState("ACCOUNT0", accountAsBytes)
 }    
