@@ -142,17 +142,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     //t := []string{""}
     //s.Invoke(APIstub,"transfer", t)
     return borrowerAsBytes, nil
-}
-/*func (s *SmartContract) transfer(APIstub shim.ChaincodeStubInterface) ([]byte, error) {
-    //from to amount
-    accountAsBytes, _ := APIstub.GetState("ACCOUNT0")
-    account := Account{}
-    json.Unmarshal(accountAsBytes, &account)
-    account.Name = "ADESH2"
-    accountAsBytes, _ = json.Marshal(account)
-    APIstub.PutState("ACCOUNT0", accountAsBytes)
-    return accountAsBytes, nil
-} */   
+} 
 func (s *SmartContract) updateRisk(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     if len(args) < 2 { //0:id, 1:risk
         return nil, errors.New("Incorrect number of arguments. Expecting 2")
