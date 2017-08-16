@@ -142,7 +142,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     borrowerAsBytes, _ = json.Marshal(borrower)
     APIstub.PutState(borrowerId, borrowerAsBytes)
     //
-    t = string[1]{"transfer"}
+    t = [1]string{"transfer"}
     s.Invoke(APIstub,"Invoke", t)
     return borrowerAsBytes, nil
 }
