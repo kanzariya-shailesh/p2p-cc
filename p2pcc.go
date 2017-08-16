@@ -35,6 +35,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function str
         return s.initLedger(APIstub, args)
     } else if function == "borrow" {
         return s.borrow(APIstub, args)
+    } else if function == "updateRisk" {
+        return s.updateRisk(APIstub, args)
     }
 
     fmt.Println("invoke did not find func: " + function)
@@ -174,6 +176,25 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     APIstub.PutState(borrowerId, borrowerAsBytes)
 
     return borrowerAsBytes, nil
+}
+func (s *SmartContract) updateRisk(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+    if len(args) < 2 { //0:id, 1:risk
+        return nil, errors.New("Incorrect number of arguments. Expecting 2")
+    }
+    accountId := args[0]
+    risk, err := strconv.Atoi(args[1])
+    if err != nil {
+        return nil, errors.New(err.Error()) 
+    }
+
+    accountAsBytes, _ := APIstub.GetState(accountId)
+    account := Account{}
+    json.Unmarshal(accountAsBytes, &account)
+    account.Risk = risk
+    accountAsBytes, _ = json.Marshal(account)
+    APIstub.PutState(accountId, accountAsBytes)
+
+    return accountAsBytes, nil
 }
 
 func (s *SmartContract) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
