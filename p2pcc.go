@@ -35,9 +35,9 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface, function str
         return s.initLedger(APIstub, args)
     } else if function == "borrow" {
         return s.borrow(APIstub, args)
-    } else if function == "transfer" {
+    }/* else if function == "transfer" {
         return s.transfer(APIstub)
-    } else if function == "updateRisk" {
+    }*/ else if function == "updateRisk" {
         return s.updateRisk(APIstub, args)
     }
 
@@ -141,12 +141,11 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     }
     borrowerAsBytes, _ = json.Marshal(borrower)
     APIstub.PutState(borrowerId, borrowerAsBytes)
-    //
-    t := []string{""}
-    s.Invoke(APIstub,"transfer", t)
+    //t := []string{""}
+    //s.Invoke(APIstub,"transfer", t)
     return borrowerAsBytes, nil
 }
-func (s *SmartContract) transfer(APIstub shim.ChaincodeStubInterface) ([]byte, error) {
+/*func (s *SmartContract) transfer(APIstub shim.ChaincodeStubInterface) ([]byte, error) {
     //from to amount
     accountAsBytes, _ := APIstub.GetState("ACCOUNT0")
     account := Account{}
@@ -155,7 +154,7 @@ func (s *SmartContract) transfer(APIstub shim.ChaincodeStubInterface) ([]byte, e
     accountAsBytes, _ = json.Marshal(account)
     APIstub.PutState("ACCOUNT0", accountAsBytes)
     return accountAsBytes, nil
-}    
+} */   
 func (s *SmartContract) updateRisk(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     if len(args) < 2 { //0:id, 1:risk
         return nil, errors.New("Incorrect number of arguments. Expecting 2")
