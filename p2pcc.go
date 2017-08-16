@@ -154,6 +154,7 @@ func (s *SmartContract) transfer(APIstub shim.ChaincodeStubInterface) ([]byte, e
     account.Name = "ADESH2"
     accountAsBytes, _ = json.Marshal(account)
     APIstub.PutState("ACCOUNT0", accountAsBytes)
+    return accountAsBytes, nil
 }    
 func (s *SmartContract) updateRisk(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     if len(args) < 2 { //0:id, 1:risk
