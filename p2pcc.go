@@ -18,6 +18,7 @@ type Account struct {
     Type string `json:"type"`
     Fund int    `json:"fund"`
     Loan int    `json:"loan"` //loan given or taken
+    Auto bool    `json:"auto"`
 }
 func main() {
     err := shim.Start(new(SmartContract))
@@ -49,9 +50,9 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []s
     APIstub.DelState("ACCOUNT2")
 
     Accounts := []Account{
-        Account{Name:"Harrison", Risk:2, Type:"LENDER", Fund:20000, Loan:0},
-        Account{Name:"Gibson", Risk:3, Type:"LENDER", Fund:20000, Loan:0},
-        Account{Name:"Peter", Risk:2, Type:"BORROWER", Fund:0, Loan:0},
+        Account{Name:"Harrison", Risk:2, Type:"LENDER", Fund:20000, Loan:0,AUTO:false},
+        Account{Name:"Gibson", Risk:3, Type:"LENDER", Fund:20000, Loan:0,AUTO:false},
+        Account{Name:"Peter", Risk:2, Type:"BORROWER", Fund:0, Loan:0,AUTO:false},
     }
 
     i := 0
@@ -103,7 +104,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
         }
         val := lendersS[i]
 
-        if val.Risk <= borrowerRisk {
+        if val.Risk == borrowerRisk {
             if val.Fund > 0 {
                 toTransfer := fundsNeeded
                 if toTransfer > val.Fund {
@@ -112,9 +113,10 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 remaining = remaining - toTransfer
                 val.Fund = val.Fund - toTransfer
                 val.Loan = val.Loan + toTransfer
-                    if val.Risk != 1 {
-                        val.Risk = val.Risk - 1
-                    }
+                
+                if val.Auto == true && val.Risk != 1 {
+                    val.Risk = val.Risk - 1
+                }
                 lenderAsBytes, _ := json.Marshal(val)
                 e := APIstub.PutState(key, lenderAsBytes)
                 if e != nil {
@@ -144,25 +146,29 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     return borrowerAsBytes, nil
 } 
 func (s *SmartContract) updateRisk(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-    if len(args) < 2 { //0:id, 1:risk
-        return nil, errors.New("Incorrect number of arguments. Expecting 2")
+    if len(args) < 3 { //0:id, 1:risk
+        return nil, errors.New("Incorrect number of arguments. Expecting 3")
     }
     accountId := args[0]
     risk, err := strconv.Atoi(args[1])
+    auto, err2 := strconv.Atoi(args[2])
     if err != nil {
         return nil, errors.New(err.Error()) 
+    }
+    if err2 != nil {
+        return nil, errors.New(err2.Error()) 
     }
 
     accountAsBytes, _ := APIstub.GetState(accountId)
     account := Account{}
     json.Unmarshal(accountAsBytes, &account)
     account.Risk = risk
+    account.Auto = auto
     accountAsBytes, _ = json.Marshal(account)
     APIstub.PutState(accountId, accountAsBytes)
 
     return accountAsBytes, nil
 }
-
 
 func (s *SmartContract) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
     fmt.Println("query is running " + function)
