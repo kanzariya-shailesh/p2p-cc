@@ -104,7 +104,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
         }
         val := lendersS[i]
 
-        if val.Risk >= borrowerRisk {
+        if val.Risk == borrowerRisk || val.Auto == true {
             if val.Fund > 0 {
                 toTransfer := remaining
                 if toTransfer > val.Fund {
@@ -114,9 +114,9 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 val.Fund = val.Fund - toTransfer
                 val.Loan = val.Loan + toTransfer
                 
-                if val.Auto != true && val.Risk != 1 {
-                    val.Risk = val.Risk - 1
-                }
+                //if val.Auto != true && val.Risk != 1 {
+                //    val.Risk = val.Risk - 1
+                //}
                 lenderAsBytes, _ := json.Marshal(val)
                 e := APIstub.PutState(key, lenderAsBytes)
                 if e != nil {

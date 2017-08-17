@@ -4,7 +4,7 @@ curl -X POST --header "Content-Type: application/json" --header "Accept: applica
   \"params\": {
     \"type\": 1,
     \"chaincodeID\": {
-      \"name\": \"afcb0094ba0ad22f0500e26badc8e24c5abdcdb6441f182faf340e646e3bc714ad709ad09f39d56f83849d51432fd5dd3e43124ffbe7a6f8a6f0a4655e6b4b37\"
+      \"name\": \"589a63cf841cc47101770c7bcc559d8314283e8c72348df6a28b7279d21c5b5a462b50f3055593193646ab9da9053da0466aefd2ef14fc7b6116aa19585711f7\"
     },
     \"ctorMsg\": {
       \"function\": \"borrow\",
