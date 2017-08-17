@@ -4,13 +4,13 @@ curl -X POST --header "Content-Type: application/json" --header "Accept: applica
   \"params\": {
     \"type\": 1,
     \"chaincodeID\": {
-      \"name\": \"6ca414f732a10d2026612c79abe5ff08b8ff17d9004d031f0bb95f97cb12bbb2276fb735c2a0e6219e1524eb213d9d6e52f672d0549d1a2854be1a5d9eb5770a\"
+      \"name\": \"ca0d6eff6e7d0cc12e9e532f4888cb94e3ca8a31880022999eb9c446318194adaf7ab3fc40cf482c3b198785b716c2e0b7df15c505780a136c24bc434d78b86e\"
     },
     \"ctorMsg\": {
       \"function\": \"updateRisk\",
       \"args\": [
         \"ACCOUNT1\",
-        \"2\",
+        \"3\",
         \"0\"
       ]
     },

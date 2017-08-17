@@ -83,7 +83,7 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     borrower := Account{}
     json.Unmarshal(borrowerAsBytes, &borrower)
     borrowerRisk := borrower.Risk
-    borrower.Loan = fundsNeeded
+    borrower.Loan = borrower.Loan + fundsNeeded
     
     //step 2 : get [borrowerRisk,matchedLenders]
     lender1AsBytes, _ := APIstub.GetState("ACCOUNT0")
