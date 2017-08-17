@@ -1,15 +1,17 @@
 curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" -d "{
   \"jsonrpc\": \"2.0\",
-  \"method\": \"query\",
+  \"method\": \"invoke\",
   \"params\": {
     \"type\": 1,
     \"chaincodeID\": {
       \"name\": \"a13e52fe4f1a5263691f1f841c8cde308abdfbf603c493ea4f84804e61397039969979da34254269dd1725d3e00a433965d67df4a4551e1264b8b55a843989c0\"
     },
     \"ctorMsg\": {
-      \"function\": \"readAll\",
+      \"function\": \"updateRisk\",
       \"args\": [
-        \"ACCOUNT1\"
+        \"ACCOUNT1\",
+        \"2\",
+        \"0\"
       ]
     },
     \"secureContext\": \"user_type1_0\"
