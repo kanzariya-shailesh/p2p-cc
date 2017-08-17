@@ -122,18 +122,15 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
                 if e != nil {
                     logger.Warning("level6 err") 
                 }
-                //substep2: give to borrower & dont update borrower yet
                 borrower.Fund = borrower.Fund + toTransfer
             }
         }
-
         if remaining == 0 {
             break
         }
         i = i + 1
     }
 
-    //step 4 : if remaining = 0 -> change risk of borrower
     if remaining == 0 {
         if borrower.Risk != 3 {
             borrower.Risk = borrower.Risk + 1 
@@ -141,8 +138,6 @@ func (s *SmartContract) borrow(APIstub shim.ChaincodeStubInterface, args []strin
     }
     borrowerAsBytes, _ = json.Marshal(borrower)
     APIstub.PutState(borrowerId, borrowerAsBytes)
-    //t := []string{""}
-    //s.Invoke(APIstub,"transfer", t)
     return borrowerAsBytes, nil
 } 
 func (s *SmartContract) updateRisk(APIstub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
