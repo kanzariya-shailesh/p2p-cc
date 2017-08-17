@@ -152,6 +152,12 @@ func (s *SmartContract) updateRisk(APIstub shim.ChaincodeStubInterface, args []s
     accountId := args[0]
     risk, err := strconv.Atoi(args[1])
     auto, err2 := strconv.Atoi(args[2])
+    
+    autoB := false
+    if auto != 0 {
+        autoB = true
+    }
+
     if err != nil {
         return nil, errors.New(err.Error()) 
     }
@@ -163,7 +169,7 @@ func (s *SmartContract) updateRisk(APIstub shim.ChaincodeStubInterface, args []s
     account := Account{}
     json.Unmarshal(accountAsBytes, &account)
     account.Risk = risk
-    account.Auto = auto
+    account.Auto = autoB
     accountAsBytes, _ = json.Marshal(account)
     APIstub.PutState(accountId, accountAsBytes)
 
