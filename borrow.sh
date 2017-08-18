@@ -4,13 +4,13 @@ curl -X POST --header "Content-Type: application/json" --header "Accept: applica
   \"params\": {
     \"type\": 1,
     \"chaincodeID\": {
-      \"name\": \"589a63cf841cc47101770c7bcc559d8314283e8c72348df6a28b7279d21c5b5a462b50f3055593193646ab9da9053da0466aefd2ef14fc7b6116aa19585711f7\"
+      \"name\": \"9cdb5ec4318f79963b50d4454d2521283725970613ad8dc11bb1debfac614b90b1527f2894af26e369a94600bbfe8b363e60a4dcaa0c6b6bc530af02515c402d\"
     },
     \"ctorMsg\": {
       \"function\": \"borrow\",
       \"args\": [
         \"ACCOUNT2\",
-        \"10000\"
+        \"50000\"
       ]
     },
     \"secureContext\": \"user_type1_0\"

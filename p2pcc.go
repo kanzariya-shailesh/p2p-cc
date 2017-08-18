@@ -50,9 +50,9 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []s
     APIstub.DelState("ACCOUNT2")
 
     Accounts := []Account{
-        Account{Name:"Harrison", Risk:2, Type:"LENDER", Fund:20000, Loan:0,Auto:false},
-        Account{Name:"Gibson", Risk:3, Type:"LENDER", Fund:20000, Loan:0,Auto:false},
-        Account{Name:"Peter", Risk:2, Type:"BORROWER", Fund:0, Loan:0,Auto:false},
+        Account{Name:"Lender Harrison", Risk:3, Type:"LENDER", Fund:20000, Loan:0,Auto:false},
+        Account{Name:"Lender Gibson", Risk:2, Type:"LENDER", Fund:20000, Loan:0,Auto:false},
+        Account{Name:"Borrower Peter", Risk:2, Type:"BORROWER", Fund:0, Loan:0,Auto:false},
     }
 
     i := 0
