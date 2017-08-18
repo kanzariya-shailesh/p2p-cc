@@ -18,7 +18,7 @@ type Account struct {
     Type string `json:"type"`
     Fund int    `json:"fund"`
     Loan int    `json:"loan"` //loan given or taken
-    Auto bool    `json:"auto"`
+    Auto bool   `json:"auto"`
 }
 func main() {
     err := shim.Start(new(SmartContract))
@@ -51,7 +51,7 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []s
 
     Accounts := []Account{
         Account{Name:"Lender Harrison", Risk:3, Type:"LENDER", Fund:20000, Loan:0,Auto:true},
-        Account{Name:"Lender Gibson", Risk:2, Type:"LENDER", Fund:20000, Loan:0,Auto:false},
+        Account{Name:"Lender Gibson", Risk:2, Type:"LENDER", Fund:35000, Loan:0,Auto:false},
         Account{Name:"Borrower Peter", Risk:1, Type:"BORROWER", Fund:0, Loan:0,Auto:false},
     }
 
