@@ -51,7 +51,7 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface, args []s
 
     Accounts := []Account{
         Account{Name:"Lender Harrison", Risk:3, Type:"LENDER", Fund:20000, Loan:0,Auto:true},
-        Account{Name:"Lender Gibson", Risk:2, Type:"LENDER", Fund:35000, Loan:0,Auto:false},
+        Account{Name:"Lender Gibson", Risk:2, Type:"LENDER", Fund:20000, Loan:0,Auto:false},
         Account{Name:"Borrower Peter", Risk:1, Type:"BORROWER", Fund:0, Loan:0,Auto:false},
     }
 
