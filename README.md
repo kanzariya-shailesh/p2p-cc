@@ -3,7 +3,8 @@
 clear && sudo git add . && sudo git commit -m 'removed accounts on init' && sudo git push origin master && clear && sudo sh deploy.sh && sudo sh initLedger.sh && sudo sh borrow.sh && clear && sudo sh readAll.sh
 
 #### HTTP POST body samples to invoke different transactions
-//deploy
+#### //deploy chaincode 
+```json
 {
   "jsonrpc": "2.0",
   "method": "deploy",
@@ -22,8 +23,9 @@ clear && sudo git add . && sudo git commit -m 'removed accounts on init' && sudo
   },
   "id": 5
 }
-
-//invoke -> initLedger
+```
+#### //invoke -> initLedger
+``` json
 {
   "jsonrpc": "2.0",
   "method": "invoke",
@@ -41,8 +43,9 @@ clear && sudo git add . && sudo git commit -m 'removed accounts on init' && sudo
   },
   "id": 0
 }
-
-//invoke -> borrow
+```
+#### //invoke -> borrow
+``` json
 {
   "jsonrpc": "2.0",
   "method": "invoke",
@@ -62,8 +65,9 @@ clear && sudo git add . && sudo git commit -m 'removed accounts on init' && sudo
   },
   "id": 0
 }
-
-//query -> read all query
+```
+#### //query -> read all query
+```json
 {
   "jsonrpc": "2.0",
   "method": "query",
@@ -82,8 +86,9 @@ clear && sudo git add . && sudo git commit -m 'removed accounts on init' && sudo
   },
   "id": 0
 }
-
-//query -> read query
+```
+#### //query -> read query
+``` json
 {
   "jsonrpc": "2.0",
   "method": "query",
@@ -102,4 +107,4 @@ clear && sudo git add . && sudo git commit -m 'removed accounts on init' && sudo
   },
   "id": 0
 }
-
+```
