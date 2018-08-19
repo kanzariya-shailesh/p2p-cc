@@ -1,5 +1,8 @@
+#### Chain code of the P2P Lending Application
+#### Commands to clean up everything and do fresh setup of the application
 clear && sudo git add . && sudo git commit -m 'removed accounts on init' && sudo git push origin master && clear && sudo sh deploy.sh && sudo sh initLedger.sh && sudo sh borrow.sh && clear && sudo sh readAll.sh
 
+#### HTTP POST body samples to invoke different transactions
 //deploy
 {
   "jsonrpc": "2.0",
